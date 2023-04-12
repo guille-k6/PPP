@@ -94,3 +94,7 @@ display: block;
 .hide {
 display: none;
 }
+.moduleLayout{
+    display: flex;
+    align-items: center;
+}

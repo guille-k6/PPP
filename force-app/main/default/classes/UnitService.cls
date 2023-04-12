@@ -121,12 +121,12 @@ public class UnitService{
                                    FROM Module__c WHERE Id in :listOfModuleIds];
         wrapper.modules = modules;
         
-        List<ModuleResponse__c> moduleResponses = [SELECT Id, (SELECT Id, Status__c, Unit__c FROM UnitResponses__r) 
+        List<ModuleResponse__c> moduleResponses = [SELECT Id, Module__c, (SELECT Id, Status__c, Unit__c FROM UnitResponses__r) 
                                                    FROM ModuleResponse__c 
                                                    WHERE Module__c in :modules AND User__c = :actualUser.id AND Status__c = 'Complete'];
         Set<Id> moduleResponseIds = new Set<Id>();
         for(ModuleResponse__c mr : moduleResponses){
-            moduleResponseIds.add(mr.Id);
+            moduleResponseIds.add(mr.Module__c);
         }
 
         wrapper.passedModuleIds = new List<Id>(moduleResponseIds);
@@ -156,14 +156,6 @@ public class UnitService{
             idCorrectUnits.add(u.Id);
         }
         wrapper.passedUnitIds = idCorrectUnits;
-        
-        /*Set<Id> unitResponseIds = new Set<Id>();
-        for(ModuleResponse__c mr : moduleResponses){
-            for(UnitResponse__c ur : mr.UnitResponses__r){
-                unitResponseIds.add(ur.Id);
-            }
-        }
-        wrapper.passedUnitIds = new List<Id>(unitResponseIds);*/
 
         return wrapper;
     }

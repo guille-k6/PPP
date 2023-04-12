@@ -8,6 +8,7 @@
         </div>
           <p class="descripcion">{data.trail.Description__c}</p><br>
           <p class="tiempoEstimado">Tiempo estimado: {data.trail.Estimated_Time__c} minutos</p>
+          <div><lightning-progress-bar value={trailProgress} size="small"></lightning-progress-bar><span>{trailProgress} %</span></div>
       </template> 
     </div> 
   </div>
@@ -16,13 +17,20 @@
   <template if:true={data}>
         <template for:each={data.modules} for:item="module">
           <div class="moduleCard" key={module.Id}>
-              <div class="moduleWithPoints">
-                <p>Modulo</p>
-                <p class="myBadge">+{module.Points__c} PUNTOS</p>
+            <div class="moduleLayout w-100">
+              <div class="w-100">
+                <div class="moduleWithPoints">
+                  <p>Modulo</p>
+                  <p class="myBadge">+{module.Points__c} PUNTOS</p>
+                </div>
+                <p class="slds-text-heading_medium slds-m-bottom_medium title">{module.Name}</p>
+                <p class="descripcion">{module.Description__c}</p>
+                <p class="tiempoEstimado">Tiempo estimado: {module.Estimated_Time__c} minutos</p>
               </div>
-              <p class="slds-text-heading_medium slds-m-bottom_medium title">{module.Name}</p>
-              <p class="descripcion">{module.Description__c}</p>
-              <p class="tiempoEstimado">Tiempo estimado: {module.Estimated_Time__c} minutos</p>
+              <div data-moduleid={module.Id} hidden>
+                <lightning-icon icon-name="utility:check" size="small" class="checkIcon slds-current-color" ></lightning-icon>
+              </div>
+            </div>
               <lightning-accordion allow-multiple-sections-open onsectiontoggle={handleSectionToggle} class="w-100">
                   <lightning-accordion-section name="A" label="Mostrar unidades" class="w-100">
                     <template for:each={module.Units__r} for:item="unidad">
@@ -35,10 +43,8 @@
                               </div>
                               <p class="tiempoEstimado">Tiempo estimado: {unidad.Estimated_Time__c} minutos</p>
                             </div>
-                            <div>
-                              <!--<template if:true={unidad.isPassed}>-->
-                                <lightning-icon icon-name="utility:check" size="small" class="checkIcon slds-current-color"></lightning-icon>
-                              <!--</template>-->
+                            <div data-unitid={unidad.Id} hidden>
+                                <lightning-icon icon-name="utility:check" size="small" class="checkIcon slds-current-color" ></lightning-icon>
                             </div>
                           </div>
 

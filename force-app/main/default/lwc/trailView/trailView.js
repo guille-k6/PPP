@@ -14,17 +14,17 @@ import { CurrentPageReference } from 'lightning/navigation';
 const TRAIL_FIELDS = [TRAIL_ID_FIELD, TRAIL_NAME_FIELD, TRAIL_DESCRIPTION_FIELD, TRAIL_POINTS_FIELD, TRAIL_ESTIMATED_TIME_FIELD]
 
 export default class TrailView extends NavigationMixin(LightningElement) {
+
     
     trailId;
     content;
     data;
     error;
-    isPassed;
-    
-    
+    @track trailProgress;
+
     @wire(getTrailWrapper, {trailId: '$trailId'})
     theWrapper({ error, data }) {
-      if (data) {
+        if (data) {
           this.data = data;
           this.error = undefined;
         
@@ -32,31 +32,11 @@ export default class TrailView extends NavigationMixin(LightningElement) {
           this.error = error;
         }
     }
-        artu(){
-        myObject = this.template.querySelector(".checkIcon");
-        console.log('entre a la funcion');
-        console.log(myObject);
-        for (let i = 0; i < data.modules.length; i++) {
-            for (let j = 0; j < data.modules[i].Units__r.length; j++) {
-                console.log('PEPITO');
-                console.log(data.passedUnitIds);
-                console.log(data.modules[i].Units__r[j].Id);
-                if(data.passedUnitIds.includes(data.modules[i].Units__r[j].Id)){
-                    //this.data.modules[i].Units__r[j]['isPassed'] = true;
-                    console.log(data.modules[i].Units__r[j]);
-                    this.myObject.style.display = 'inline';
-                  //  this.myObject.classList.add("show");
-                }else{
-                    this.myObject.style.display = 'none';
-                }
-                  
-            }
-        }
-    }
     
     
     @wire(CurrentPageReference) currentPageReference;
 
+    
     @api
     get recordId() {
         return this.TrailId;
@@ -81,17 +61,42 @@ export default class TrailView extends NavigationMixin(LightningElement) {
     @wire(getRecord, { recordId: '$trailId', fields: TRAIL_FIELDS })
     wiredRecord;
 
-
-    connectedCallback(){
-        //console.log('este es el TrailId:');
-        //console.log(this.trailId);
-        //console.log('este es el trail wrapper');
-        //console.log(this.data.modules);
+    calcularTrailProgress(){
+        if(this.data.modules.length === 0){
+            this.trailProgress = 0;
+        }else{
+            this.trailProgress = (this.data.passedModuleIds.length / this.data.modules.length)*100;
+        }
     }
 
-    // JS DEL ACCORDION
-    verTrail(){
-        //console.log(this.data.modules);
+    showUnitChecks(){
+        for (let i = 0; i < this.data.modules.length; i++) {
+            for (let j = 0; j < this.data.modules[i].Units__r.length; j++) {
+                if(this.data.passedUnitIds.includes(this.data.modules[i].Units__r[j].Id)){
+                    let unitId = this.data.modules[i].Units__r[j].Id;
+                    this.template.querySelector(`div[data-unitid=${unitId}]`).removeAttribute("hidden");
+                }         
+            }
+        }
+    }
+
+    renderedCallback() {
+        if (this.data) {
+            this.showUnitChecks();
+            this.showModuleChecks();
+            this.calcularTrailProgress();
+        } else{
+            // do sth
+        }
+    }
+
+    showModuleChecks(){
+        for(let i = 0; i< this.data.modules.length; i++){
+            if(this.data.passedModuleIds.includes(this.data.modules[i].Id)){
+                let moduleId = this.data.modules[i].Id;
+                this.template.querySelector(`div[data-moduleid=${moduleId}]`).removeAttribute("hidden");                
+            }
+        }
     }
 
     activeSections = ['A', 'C'];
@@ -106,8 +111,5 @@ export default class TrailView extends NavigationMixin(LightningElement) {
             this.activeSectionsMessage =
                 'Open sections: ' + openSections.join(', ');
         }
-    }
-    init(){
-        this.artu();
     }
 }
