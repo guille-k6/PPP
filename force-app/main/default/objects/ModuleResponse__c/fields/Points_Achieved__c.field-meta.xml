@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Points_Achieved__c</fullName>
+    <externalId>false</externalId>
+    <label>Points Achieved</label>
+    <summarizedField>UnitResponse__c.Points_Achieved__c</summarizedField>
+    <summaryForeignKey>UnitResponse__c.ModuleResponse__c</summaryForeignKey>
+    <summaryOperation>sum</summaryOperation>
+    <trackTrending>false</trackTrending>
+    <type>Summary</type>
+</CustomField>

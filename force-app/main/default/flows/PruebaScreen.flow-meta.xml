@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <apiVersion>57.0</apiVersion>
+    <assignments>
+        <name>Assignment_Modules</name>
+        <label>Assignment Modules</label>
+        <locationX>270</locationX>
+        <locationY>518</locationY>
+        <assignmentItems>
+            <assignToReference>NombreModulo</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>{!Iterar_Modulos.Name} &lt;br&gt;</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Iterar_Modulos</targetReference>
+        </connector>
+    </assignments>
+    <decisions>
+        <description>Existen modulos con ese Skill??</description>
+        <name>Contiene_modulos</name>
+        <label>Contiene modulos</label>
+        <locationX>182</locationX>
+        <locationY>734</locationY>
+        <defaultConnector>
+            <targetReference>No_contiene_modulos</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No tiene</defaultConnectorLabel>
+        <rules>
+            <name>Existe</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>NombreModulo</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>TieneModulosScreen</targetReference>
+            </connector>
+            <label>Existe</label>
+        </rules>
+    </decisions>
+    <dynamicChoiceSets>
+        <name>Choice</name>
+        <dataType>Multipicklist</dataType>
+        <displayField xsi:nil="true"/>
+        <object xsi:nil="true"/>
+        <picklistField>Skills__c</picklistField>
+        <picklistObject>Module__c</picklistObject>
+        <sortOrder>Desc</sortOrder>
+    </dynamicChoiceSets>
+    <dynamicChoiceSets>
+        <name>SkillPrueba</name>
+        <dataType>Picklist</dataType>
+        <displayField xsi:nil="true"/>
+        <object xsi:nil="true"/>
+        <picklistField>SkillPrueba__c</picklistField>
+        <picklistObject>Module__c</picklistObject>
+    </dynamicChoiceSets>
+    <environments>Default</environments>
+    <interviewLabel>PruebaScreen {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>PruebaScreen</label>
+    <loops>
+        <name>Iterar_Modulos</name>
+        <label>Iterar Modulos</label>
+        <locationX>182</locationX>
+        <locationY>398</locationY>
+        <collectionReference>Get_Modules</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Assignment_Modules</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Contiene_modulos</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>Flow</processType>
+    <recordLookups>
+        <name>Get_Modules</name>
+        <label>Get Modules</label>
+        <locationX>182</locationX>
+        <locationY>278</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Iterar_Modulos</targetReference>
+        </connector>
+        <filterLogic>or</filterLogic>
+        <filters>
+            <field>SkillPrueba__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>SkillPrueba</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>Module__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <screens>
+        <description>No contiene modulos</description>
+        <name>No_contiene_modulos</name>
+        <label>No contiene modulos</label>
+        <locationX>314</locationX>
+        <locationY>854</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <fields>
+            <name>NoTiene</name>
+            <fieldText>&lt;p&gt;No existen modulos con el Skill seleccionado.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <name>Skills_by_Modules</name>
+        <label>Skills by Modules</label>
+        <locationX>182</locationX>
+        <locationY>158</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>Get_Modules</targetReference>
+        </connector>
+        <fields>
+            <name>Elige</name>
+            <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 14px;&quot;&gt;Hi {!$User.FirstName} choose a skill to see the modules&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Skill_Prueba</name>
+            <choiceReferences>SkillPrueba</choiceReferences>
+            <dataType>String</dataType>
+            <fieldText>Skill Prueba</fieldText>
+            <fieldType>DropdownBox</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <name>TieneModulosScreen</name>
+        <label>TieneModulosScreen</label>
+        <locationX>50</locationX>
+        <locationY>854</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <fields>
+            <name>TieneModulos</name>
+            <fieldText>&lt;p&gt;{!NombreModulo}&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <start>
+        <locationX>56</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Skills_by_Modules</targetReference>
+        </connector>
+    </start>
+    <status>Draft</status>
+    <variables>
+        <name>currentItemFromSourceCollection</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Module__c</objectType>
+    </variables>
+    <variables>
+        <name>NombreModulo</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+</Flow>

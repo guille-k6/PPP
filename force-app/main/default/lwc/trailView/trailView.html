@@ -1,0 +1,60 @@
+<template>
+  <div class="mainCard">
+    <div class="trailCard">
+      <template if:true={data}>
+        <div class="titlePoints">
+          <p class="slds-text-heading_medium slds-m-bottom_medium title">{data.trail.Name}</p>
+          <p class="myBadge">+{data.trail.Points__c} PUNTOS</p>
+        </div>
+          <p class="descripcion">{data.trail.Description__c}</p><br>
+          <p class="tiempoEstimado">Tiempo estimado: {data.trail.Estimated_Time__c} minutos</p>
+      </template> 
+    </div> 
+  </div>
+
+
+  <template if:true={data}>
+        <template for:each={data.modules} for:item="module">
+          <div class="moduleCard" key={module.Id}>
+              <div class="moduleWithPoints">
+                <p>Modulo</p>
+                <p class="myBadge">+{module.Points__c} PUNTOS</p>
+              </div>
+              <p class="slds-text-heading_medium slds-m-bottom_medium title">{module.Name}</p>
+              <p class="descripcion">{module.Description__c}</p>
+              <p class="tiempoEstimado">Tiempo estimado: {module.Estimated_Time__c} minutos</p>
+              <lightning-accordion allow-multiple-sections-open onsectiontoggle={handleSectionToggle} class="w-100">
+                  <lightning-accordion-section name="A" label="Mostrar unidades" class="w-100">
+                    <template for:each={module.Units__r} for:item="unidad">
+                      <div class="unitCard" key={unidad.Id}>
+                          <div class="unitLayout">
+                            <div class="w-100">
+                              <div class="titlePoints">
+                                <p class="slds-text-heading_medium slds-m-bottom_medium unitName">{unidad.Name}</p>
+                                <p class="myBadge">+ {unidad.Points__c} PUNTOS</p>
+                              </div>
+                              <p class="tiempoEstimado">Tiempo estimado: {unidad.Estimated_Time__c} minutos</p>
+                            </div>
+                            <div>
+                              <!--<template if:true={unidad.isPassed}>-->
+                                <lightning-icon icon-name="utility:check" size="small" class="checkIcon slds-current-color"></lightning-icon>
+                              <!--</template>-->
+                            </div>
+                          </div>
+
+                      </div>
+                    </template>
+                  </lightning-accordion-section>
+              </lightning-accordion>
+          </div>
+
+          <!-- <template for:each={module.Units__r} for:item="unidad">
+            <lightning-card key={unidad.Id}>
+                <div>Nombre de unidad: {unidad.Name}</div>
+                <div>Tiempo Estimado: {unidad.Estimated_Time__c}</div>
+                <div>Puntos: {unidad.Points__c}</div>
+            </lightning-card>
+          </template> -->
+        </template>
+  </template>        
+</template>

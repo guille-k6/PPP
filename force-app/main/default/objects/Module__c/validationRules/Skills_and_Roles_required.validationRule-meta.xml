@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Skills_and_Roles_required</fullName>
+    <active>true</active>
+    <description>This validation rules triggers when a role tries to be activated with no skills and roles</description>
+    <errorConditionFormula>Active__c = True  &amp;&amp;  (ISBLANK( Roles__c )  ||  ISBLANK(Skills__c) )</errorConditionFormula>
+    <errorMessage>No se puede activar un módulo sin roles o sin skills.</errorMessage>
+</ValidationRule>
