@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
-    <fullName>Active_Module_Required</fullName>
-    <active>true</active>
-    <description>This validation triggers when an unactive module tries to be added to a trail.</description>
-    <errorConditionFormula>Module__r.Active__c = False</errorConditionFormula>
-    <errorMessage>No se puede agregar un modulo inactivo a un trail.</errorMessage>
-</ValidationRule>
