@@ -9,12 +9,12 @@ public class UnitServiceTest {
         Module__c module = new Module__c(
             Name = 'PrimerModuloTest',
             Roles__c = 'Admin',
-            Skills__c = 'Apex'
+            Skill__c = 'Apex'
         );
         insert module;
         
         Unit__c unit = new Unit__c(
-        	Module__c = module.id,
+            Module__c = module.id,
             Points__c = 100,
             Content__c = 'First unit content',
             Estimated_Time__c = 20
@@ -69,12 +69,12 @@ public class UnitServiceTest {
         Module__c module = new Module__c(
             Name = 'PrimerModuloTest',
             Roles__c = 'Admin',
-            Skills__c = 'Apex'
+            skill__c = 'Apex'
         );
         insert module;
         
         Unit__c unit = new Unit__c(
-        	Module__c = module.id,
+            Module__c = module.id,
             Points__c = 100,
             Content__c = 'First unit content',
             Estimated_Time__c = 20
@@ -135,12 +135,12 @@ public class UnitServiceTest {
         Module__c module = new Module__c(
             Name = 'PrimerModuloTest',
             Roles__c = 'Admin',
-            Skills__c = 'Apex'
+            skill__c = 'Apex'
         );
         insert module;
         
         Unit__c unit = new Unit__c(
-        	Module__c = module.id,
+            Module__c = module.id,
             Points__c = 100,
             Content__c = 'First unit content',
             Estimated_Time__c = 20
@@ -219,7 +219,7 @@ public class UnitServiceTest {
         Module__c module = new Module__c(
             Name = 'PrimerModuloTest',
             Roles__c = 'Admin',
-            Skills__c = 'Apex',
+            skill__c = 'Apex',
             Active__c = true
         );
         insert module;

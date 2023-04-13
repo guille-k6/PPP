@@ -1,0 +1,95 @@
+.unitCard{
+    width: 100%;
+    background-color: white;
+    border-radius: 8px;
+    padding: 3rem;
+}
+.myBadge{
+    background-color: #d6d6d6;
+    color: #3b3b3b;
+    padding: 4px;
+    border-radius: 8px;
+    width: max-content;
+}
+.titleLayout{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #0176d3;
+}
+.unitTitle{
+    font-weight: 600;
+    font-size: x-large;
+}
+.estimatedTime{
+    font-size: larger;
+    color: #5f5e5e;
+}
+.unitPoints{
+
+}
+.contentTitle{
+    margin-top: 0.6rem;
+    margin-bottom: 0.4rem;
+    font-size: larger;
+    color: #575757;
+}
+.unitContent{
+    width: 80%;
+}
+.questionsCard{
+    width: 80%;
+    margin: auto;
+    padding: 1rem 2rem;
+    background-color: #f1f1f1;
+    border-radius: 4px;
+}
+.questionsTitleLayout{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 4px;
+    border-bottom: 1px solid lightgray;
+}
+.unitPoints{
+    color: green;
+    font-size: larger;
+    font-weight: 600;
+}
+.questionCard{
+    padding: 1rem;
+    margin: 0.5rem 0rem;
+    background-color: white;
+    border-radius: 6px;
+}
+.questionContent{
+    font-weight: 500;
+    font-size: larger;
+    padding: 0rem 1rem;
+}
+.optionLayout{
+    display: flex;
+    margin: 0.6rem 0rem;
+    align-items: center;
+}
+.optionContent{
+    width: 80%;
+}
+.radioButton{
+    width: 3%;
+}
+.theQuestion{
+    border-bottom: 1px solid #f1f1f1;
+    width: max-content;
+}
+.checkButton{
+    padding: 0.5rem 1rem;
+}
+.unitAlreadyPassed{
+    font-size: x-large;
+    font-weight: 400;
+    color: green;
+    width: max-content;
+    margin: 1.5rem auto;
+}

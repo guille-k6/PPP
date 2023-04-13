@@ -5,6 +5,8 @@ public class UnitService{
         public Unit__c unit; 
         @AuraEnabled
         public List<Question__c> questions;  //Listado de Preguntas con Opciones relacionadas
+        @AuraEnabled
+        public Boolean isUnitPassed;
 	}
     
     public class TrailWrapper{
@@ -20,11 +22,11 @@ public class UnitService{
         public List<Id> passedUnitIds; //Ids de Unidades relacionadas a módulos del Trail actual que el Alumno ya aprobó
     }
     
-    @AuraEnabled(cacheable=true)
-    public static Boolean saveAnswers(Id unitId, Object jsonAnswers){
+    @AuraEnabled
+    public static Boolean saveAnswers(Id unitId, String jsonAnswers){
         // JSON.Serialize jsonAnswers before deserializing in order to make sure it's on proper format.
         // MAP(ID = QUESTION, ID = OPTION)
-        Map<Id, Id> answerMap = (Map<Id, Id>) JSON.deserializeStrict(JSON.serialize(jsonAnswers), Map<Id, Id>.class);
+        Map<Id, Id> answerMap = (Map<Id, Id>) JSON.deserializeStrict(jsonAnswers, Map<Id, Id>.class);
         
         //Actual user
         User actualUser = [select Id from User where Id = :UserInfo.getUserId()];
@@ -78,15 +80,16 @@ public class UnitService{
         unidadConRespuestas.Status__c = 'Answered';
         try{
             update unidadConRespuestas;
-            if(unidadConRespuestas.Status__c == 'Success'){
-                return true;
-            }else{
-                return false;
-            }
         }catch(DmlException e){
-            System.debug(e.getMessage());
             return false;
-        }  
+        }
+        // Lo vuelvo a traer porque sino no se llega a actualizar por completo
+        UnitResponse__c ur = [SELECT Id, Status__c, Points_Achieved__c FROM UnitResponse__c WHERE Id = :unidadConRespuestas.id];
+        if(ur.Status__c == 'Success'){
+            return true;
+        }else{
+            return false;
+        }
     }
     
     @AuraEnabled(cacheable=true)
@@ -116,7 +119,7 @@ public class UnitService{
             listOfModuleIds.add(tm.Module__c);
         }
         // Modules related to the trail.
-        List<Module__c> modules = [SELECT Id, Name, Estimated_Time__c, Description__c, Active__c, Roles__c, Skills__c, Points__c, Number_Of_Units__c,
+        List<Module__c> modules = [SELECT Id, Name, Estimated_Time__c, Description__c, Active__c, Roles__c, Skill__c, Points__c, Number_Of_Units__c,
                                    (SELECT Id, Name, Points__c, Estimated_Time__c FROM Units__r)
                                    FROM Module__c WHERE Id in :listOfModuleIds];
         wrapper.modules = modules;
@@ -172,7 +175,15 @@ public class UnitService{
         List<Question__c> questions = [SELECT Id, Name, Description__c, Unit__c, (SELECT Id, Question__c, Description__c, isCorrect__c FROM Options__r)
                      				   FROM Question__c 
                                        WHERE Unit__c = :unitId];
-        wrapper.questions = questions;                               
+        wrapper.questions = questions;   
+        
+        User actualUser = [select Id from User where Id = :UserInfo.getUserId()];
+        List<UnitResponse__c> ur = [SELECT Id FROM UnitResponse__c WHERE Unit__c = :unitId AND User__c =: actualUser.Id AND Status__c = 'Success'];
+        if(ur.size() == 0){
+            wrapper.isUnitPassed = false;
+        }else{
+            wrapper.isUnitPassed = true;
+        }
         
         return wrapper;
     }

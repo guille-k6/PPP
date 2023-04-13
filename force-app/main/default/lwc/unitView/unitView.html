@@ -1,0 +1,49 @@
+<template>
+    <lightning-card>
+        <template if:true={data}>
+            <div class="unitCard">
+                <div class="titleLayout">
+                    <p class="unitTitle">{data.unit.Name}</p>
+                    <p class="estimatedTime">~ {data.unit.Estimated_Time__c} minutos</p>
+                </div>
+                <p class="contentTitle">Contenido:</p>
+                <p class="unitContent">{data.unit.Content__c}</p>
+            </div>
+
+            <template if:false={data.isUnitPassed}>
+                <div class="questionsCard">
+                    <div class="questionsTitleLayout">
+                        <p class="unitTitle">Prueba</p>
+                        <p class="unitPoints">+ {data.unit.Points__c} PUNTOS</p>
+                    </div>
+                    <form action="submit">
+                        <template for:each={data.questions} for:item="question">
+                            
+                            <div class="questionCard" key={question.Id}>
+                                <div class="questionContent"><p class="theQuestion">{question.Description__c}</p></div>
+                            
+                                <template for:each={question.Options__r} for:item="option" for:index="index">
+                                    <div class="optionLayout" key={option.Id}>
+                                        <lightning-input 
+                                            type="radio"
+                                            name={question.Id} 
+                                            class="radioButton"
+                                            value={option.Question__c} 
+                                            value2={option.Id} 
+                                            onclick={handleRadioChange}>
+                                        </lightning-input>
+                                        <div class="optionContent">{option.Description__c}</div> 
+                                    </div>
+                                </template>  
+                            </div>                 
+                        </template>
+                        <lightning-button id="buttonSubmit" variant="brand" label="Validar reto" title="Primary action" onclick={handleSubmit} class="checkButton"></lightning-button>
+                    </form>
+                </div>
+            </template> 
+            <template if:true={data.isUnitPassed}>
+                <p class="unitAlreadyPassed">UNIDAD COMPLETA</p>
+            </template>
+        </template>        
+    </lightning-card>
+</template>
