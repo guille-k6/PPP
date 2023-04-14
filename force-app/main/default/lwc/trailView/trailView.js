@@ -112,4 +112,16 @@ export default class TrailView extends NavigationMixin(LightningElement) {
                 'Open sections: ' + openSections.join(', ');
         }
     }
+
+    handleClick(e){
+        const unitId = e.currentTarget.dataset.unitId; // Obtén el ID de la unidad desde el evento
+        this[NavigationMixin.Navigate]({
+            type: 'standard__recordPage',
+            attributes: {
+                recordId: unitId,
+                objectApiName: 'Unit__c',
+                actionName: 'view'
+            }
+        });
+    }
 }

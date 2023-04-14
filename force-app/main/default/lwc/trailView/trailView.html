@@ -38,7 +38,7 @@
                           <div class="unitLayout">
                             <div class="w-100">
                               <div class="titlePoints">
-                                <p class="slds-text-heading_medium slds-m-bottom_medium unitName">{unidad.Name}</p>
+                                <a class="slds-text-heading_medium slds-m-bottom_medium unitName" onclick={handleClick} data-unit-id={unidad.Id}>{unidad.Name}</a>
                                 <p class="myBadge">+ {unidad.Points__c} PUNTOS</p>
                               </div>
                               <p class="tiempoEstimado">Tiempo estimado: {unidad.Estimated_Time__c} minutos</p>
