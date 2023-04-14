@@ -14,5 +14,6 @@ https://drive.google.com/drive/folders/15tBA8U-M5jS2cpv0HaFR1brWBIoINyBq?usp=sha
 
 # Accounts:
 
-arturo.petrich@projectp5.com
-guillermo.casey@projectp5.com
+- arturo.petrich@projectp5.com
+- guillermo.casey@projectp5.com
+- Pass por both accounts : pruebaprueba1234
